@@ -41,3 +41,52 @@ describe('Verificando service produtos', function () {
   afterEach(function () {
     sinon.restore();
   });
+
+describe('Testa se cria, altera e deleta', function () {
+  it("testa a função se cria corretamente", async function () {
+    const newProduct = { id: 4, name: 'Machado do Thor Stormbreaker' };
+    const changeProductName = { name: 'Machado do Thor Stormbreaker' };
+
+    sinon.stub(productsModel, "createProducts").resolves(newProduct);
+    const product = await productsService.createProducts(changeProductName);
+
+    expect(product).to.equal(newProduct);
+  });
+
+  it("Testa se e alterado", async function () {
+    const changed = { id: 1, name: 'Machado do Thor Stormbreaker' }
+      const changeName = { name: 'Machado do Thor Stormbreaker' };
+
+      const update = sinon.stub(productsModel, "updateProduct");
+      sinon.stub(productsModel, "getById").resolves(changed);
+
+      const data = await productsService.updateProduct(changeName, 1);
+      sinon.assert.calledOnce(update);
+      expect(data).to.equal(changed);
+    });
+
+    });
+  
+  it("testa se deleta", async function () {
+    const deleted = sinon.stub(productsModel, "deleteProduct");
+    await productsService.deleteProduct(1);
+
+    sinon.assert.calledOnce(deleted);
+  })
+
+  it("testa altera", async function () {
+      const product = { id: 1, name: 'Machado do Thor Stormbreaker' }
+      const changeName = { name: 'Machado do Thor Stormbreaker' };
+
+      const data = sinon.stub(productsModel, "updateProduct");
+      sinon.stub(productsModel, "getById").resolves(product);
+
+      const update = await productsService.updateProduct(changeName, 1);
+      sinon.assert.calledOnce(data);
+      expect(update).to.equal(product);
+  });
+
+  afterEach(function () {
+   sinon.restore();
+  }); 
+
